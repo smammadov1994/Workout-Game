@@ -1,0 +1,10 @@
+{
+  "name": "fitness-rpg",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A fitness RPG game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

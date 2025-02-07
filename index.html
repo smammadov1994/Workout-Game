@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness RPG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="character-section">
+        <div class="character-stats">
+          <h2>Your Knight</h2>
+          <div class="stats">
+            <p>Level: <span id="level">1</span></p>
+            <p>Experience: <span id="xp">0</span></p>
+            <p>Strength: <span id="strength">10</span></p>
+            <p>Endurance: <span id="endurance">10</span></p>
+          </div>
+        </div>
+        <div class="character-equipment">
+          <h3>Equipment</h3>
+          <div class="character-preview">
+            <div class="character-figure">
+              <!-- Character silhouette background -->
+              <div class="character-silhouette"></div>
+              <!-- Equipment preview slots -->
+              <div class="preview-slot weapon-preview"></div>
+              <div class="preview-slot armor-preview"></div>
+              <div class="preview-slot shield-preview"></div>
+            </div>
+            <div class="equipment-slots">
+              <div class="equipment-slot" data-slot="weapon">
+                <p>Weapon</p>
+                <div class="slot-preview"></div>
+              </div>
+              <div class="equipment-slot" data-slot="armor">
+                <p>Armor</p>
+                <div class="slot-preview"></div>
+              </div>
+              <div class="equipment-slot" data-slot="shield">
+                <p>Shield</p>
+                <div class="slot-preview"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="workout-section">
+        <div class="boss-battle" id="boss-battle">
+          <h2>Current Boss Battle</h2>
+          <div class="boss-info" id="boss-info">
+            <div class="boss-portrait" id="boss-portrait"></div>
+            <div class="boss-details">
+              <h3 id="boss-name">No Active Boss</h3>
+              <p id="boss-story" class="boss-story"></p>
+              <div class="boss-health-bar">
+                <div id="boss-health" class="health-fill"></div>
+                <span id="boss-health-text">100/100</span>
+              </div>
+              <p id="boss-weakness" class="boss-weakness"></p>
+            </div>
+          </div>
+          <div class="boss-challenge" id="boss-challenge">
+            <h3>Workout Challenge</h3>
+            <div id="challenge-list" class="challenge-list"></div>
+          </div>
+          <button id="find-boss" class="find-boss-btn">Find New Boss</button>
+        </div>
+        <div class="workout-form">
+          <select id="workout-type">
+            <option value="bicep_curls">Bicep Curls</option>
+            <option value="tricep_pushdowns">Tricep Pushdowns</option>
+            <option value="squats">Squats</option>
+            <option value="pushups">Push-ups</option>
+            <option value="pullups">Pull-ups</option>
+            <option value="deadlifts">Deadlifts</option>
+            <option value="shoulder_press">Shoulder Press</option>
+            <option value="lunges">Lunges</option>
+            <option value="plank">Plank (seconds)</option>
+            <option value="crunches">Crunches</option>
+          </select>
+          <input type="number" id="workout-reps" placeholder="Number of reps" />
+          <button id="complete-workout">Complete Exercise</button>
+        </div>
+        <div class="inventory-section">
+          <h3>Inventory (<span id="inventory-count">0</span>/100)</h3>
+          <div class="inventory-grid" id="inventory-grid">
+            <!-- Inventory slots will be generated here -->
+          </div>
+        </div>
+        <div class="reward-display" id="reward-display" style="display: none">
+          <h3>New Equipment Found!</h3>
+          <div class="card-container">
+            <div class="card">
+              <div class="card-image">
+                <!-- AI generated image will go here -->
+              </div>
+              <div class="card-stats">
+                <!-- Equipment stats will go here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

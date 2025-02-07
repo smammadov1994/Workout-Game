@@ -1,0 +1,469 @@
+:root {
+  --primary-color: #2c1810;
+  --secondary-color: #8b4513;
+  --accent-color: #ffd700;
+  --text-color: #e0d5c1;
+  --card-border: #a17545;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: "Cinzel", serif;
+  background: linear-gradient(135deg, var(--primary-color), #000);
+  color: var(--text-color);
+}
+
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.character-section,
+.workout-section {
+  background: rgba(44, 24, 16, 0.9);
+  border: 2px solid var(--card-border);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.character-stats {
+  margin-bottom: 2rem;
+}
+
+.stats p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 0.5rem;
+}
+
+.character-preview {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.character-figure {
+  flex: 1;
+  position: relative;
+  min-height: 400px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid var(--card-border);
+}
+
+.character-silhouette {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 300px;
+  background: linear-gradient(transparent, rgba(255, 215, 0, 0.1));
+  border-radius: 100px 100px 0 0;
+  clip-path: polygon(
+    30% 0%,
+    /* Head top left */ 70% 0%,
+    /* Head top right */ 70% 20%,
+    /* Neck right */ 85% 25%,
+    /* Shoulder right */ 85% 45%,
+    /* Arm right */ 70% 50%,
+    /* Hand right */ 70% 90%,
+    /* Leg right */ 60% 100%,
+    /* Foot right */ 40% 100%,
+    /* Foot left */ 30% 90%,
+    /* Leg left */ 30% 50%,
+    /* Hand left */ 15% 45%,
+    /* Arm left */ 15% 25%,
+    /* Shoulder left */ 30% 20% /* Neck left */
+  );
+}
+
+.preview-slot {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.3s ease;
+}
+
+.weapon-preview {
+  width: 80px;
+  height: 150px;
+  left: 15%;
+  top: 40%;
+}
+
+.armor-preview {
+  width: 140px;
+  height: 200px;
+  left: 50%;
+  top: 25%;
+  transform: translateX(-50%);
+}
+
+.shield-preview {
+  width: 80px;
+  height: 100px;
+  right: 15%;
+  top: 40%;
+}
+
+.equipment-slots {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-content: start;
+}
+
+.equipment-slot {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.equipment-slot:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+.equipment-slot {
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.equipment-slot p {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.equipment-slot small {
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  opacity: 0.8;
+}
+
+.slot-preview {
+  width: 100%;
+  height: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.3s ease;
+}
+
+.equipment-slot.equipped {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+.equipment-slot::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.equipment-slot:has(p:not(:empty))::before {
+  opacity: 1;
+}
+
+.boss-battle {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--card-border);
+  border-radius: 10px;
+}
+
+.boss-info {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.boss-portrait {
+  width: 200px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--card-border);
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+}
+
+.boss-details h3 {
+  color: var(--accent-color);
+  margin: 0 0 1rem 0;
+}
+
+.boss-story {
+  font-style: italic;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.boss-health-bar {
+  height: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff0000, #ff4400);
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+.boss-health-bar span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.boss-weakness {
+  color: #ff4400;
+  font-weight: bold;
+}
+
+.boss-challenge {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.challenge-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.challenge-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.challenge-item.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.find-boss-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.find-boss-btn:hover:not(:disabled) {
+  background: var(--accent-color);
+  color: var(--primary-color);
+}
+
+.workout-form {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.inventory-section {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.inventory-slot {
+  aspect-ratio: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  border-radius: 5px;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.inventory-slot:hover {
+  border-color: var(--accent-color);
+  transform: scale(1.05);
+}
+
+.inventory-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.inventory-slot .tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--text-color);
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.inventory-slot:hover .tooltip {
+  opacity: 1;
+}
+
+.empty-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--card-border);
+  font-size: 0.8rem;
+}
+
+select,
+input,
+button {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  font-family: "Cinzel", serif;
+}
+
+button {
+  background: var(--secondary-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-color);
+  color: var(--primary-color);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card-container {
+  perspective: 1000px;
+}
+
+.card {
+  width: 100%;
+  max-width: 300px;
+  margin: 2rem auto;
+  background: linear-gradient(45deg, #2c1810, #462b1e);
+  border: 8px solid var(--card-border);
+  border-radius: 15px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 4px solid var(--card-border);
+}
+
+.card-stats {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Animation for new equipment */
+@keyframes cardReveal {
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+}
+
+.reward-display .card {
+  animation: cardReveal 1s ease-out forwards;
+}
