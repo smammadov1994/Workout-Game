@@ -1,5 +1,4 @@
-import { generateItemImage } from "../services/imageService.js";
-import { API_KEYS } from "../constants/api-keys.js";
+import { API_KEYS, ENGINE_ID } from "../constants/api-keys.js";
 
 export class Boss {
   constructor() {
@@ -44,52 +43,53 @@ export class Boss {
     healthText.textContent = `${Math.round(this.health)}/${this.maxHealth}`;
   }
 
-  async generateBossImage(prompt) {
+  async generateBossImage() {
     try {
+      const basePrompt = `Fantasy boss character: ${this.name}. ${this.story}`;
+      const enhancedPrompt = `${basePrompt} High detail fantasy art, dramatic lighting, epic pose, 4k, highly detailed`;
+
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEYS.GEMINI}`,
+        `https://api.stability.ai/v1/generation/${ENGINE_ID}/text-to-image`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${API_KEYS.STABILITY_AI}`,
           },
           body: JSON.stringify({
-            contents: [
+            text_prompts: [
               {
-                parts: [
-                  {
-                    text: `Create a detailed image description for a fantasy boss character: ${this.name}. ${this.story} Describe the boss's appearance in vivid, specific detail that could be used to generate an artwork.`,
-                  },
-                ],
+                text: enhancedPrompt,
+                weight: 1,
               },
             ],
+            cfg_scale: 7,
+            height: 1024,
+            width: 1024,
+            steps: 30,
+            samples: 1,
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to generate boss image description");
+        throw new Error(`Stability AI API error: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      const imageDescription = data.candidates[0].content.parts[0].text;
+      const responseData = await response.json();
+      const base64Image = responseData.artifacts[0].base64;
+      const imageUrl = `data:image/png;base64,${base64Image}`;
 
-      // Use Stability AI to generate the actual image
-      const imageUrl = await generateItemImage({
-        name: this.name,
-        type: "boss",
-        rarity: "Legendary",
-        customPrompt: imageDescription,
-      });
+      this.image = imageUrl;
+      document.getElementById(
+        "boss-portrait"
+      ).style.backgroundImage = `url(${imageUrl})`;
 
-      if (imageUrl) {
-        this.image = imageUrl;
-        document.getElementById(
-          "boss-portrait"
-        ).style.backgroundImage = `url(${imageUrl})`;
-      }
+      return imageUrl;
     } catch (error) {
       console.error("Failed to generate boss image:", error);
+      return null;
     }
   }
 }

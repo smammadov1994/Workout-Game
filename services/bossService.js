@@ -2,12 +2,10 @@ import { Boss } from "../models/Boss.js";
 import { DEFAULT_BOSSES } from "../data.js";
 import { WORKOUTS } from "../constants/workouts.js";
 
-let defaultBossIndex = 0;
-
-export async function generateBoss() {
+export async function generateBossWithGemini() {
   try {
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDjK__jJVM1TsuZa1_PhqsC35s7MJndxhA",
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEYS.GEMINI}`,
       {
         method: "POST",
         headers: {
@@ -31,31 +29,47 @@ export async function generateBoss() {
     );
 
     if (!response.ok) {
-      return getDefaultBoss();
+      // If API fails, use default boss
+      if (defaultBossIndex >= DEFAULT_BOSSES.length) {
+        defaultBossIndex = 0; // Reset to first boss if we've used them all
+      }
+      const defaultBoss = DEFAULT_BOSSES[defaultBossIndex++];
+      const boss = new Boss();
+      Object.assign(boss, defaultBoss);
+      return boss;
     }
 
     try {
       const data = await response.json();
       const bossData = JSON.parse(data.candidates[0].content.parts[0].text);
+
       const boss = new Boss();
-      Object.assign(boss, bossData);
+      boss.name = bossData.name;
+      boss.story = bossData.story;
+      boss.weakness = bossData.weakness;
+      boss.challenge = bossData.challenges;
+
       return boss;
     } catch (error) {
       console.error("Failed to parse boss data:", error);
-      return getDefaultBoss();
+      // Fall back to default boss
+      if (defaultBossIndex >= DEFAULT_BOSSES.length) {
+        defaultBossIndex = 0;
+      }
+      const defaultBoss = DEFAULT_BOSSES[defaultBossIndex++];
+      const boss = new Boss();
+      Object.assign(boss, defaultBoss);
+      return boss;
     }
   } catch (error) {
     console.error("Failed to fetch from API:", error);
-    return getDefaultBoss();
+    // Fall back to default boss
+    if (defaultBossIndex >= DEFAULT_BOSSES.length) {
+      defaultBossIndex = 0;
+    }
+    const defaultBoss = DEFAULT_BOSSES[defaultBossIndex++];
+    const boss = new Boss();
+    Object.assign(boss, defaultBoss);
+    return boss;
   }
-}
-
-function getDefaultBoss() {
-  if (defaultBossIndex >= DEFAULT_BOSSES.length) {
-    defaultBossIndex = 0;
-  }
-  const defaultBoss = DEFAULT_BOSSES[defaultBossIndex++];
-  const boss = new Boss();
-  Object.assign(boss, defaultBoss);
-  return boss;
 }
